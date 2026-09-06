@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://cabeto.art'), // Reemplaza con tu dominio personalizado o tu URL de Vercel
+  metadataBase: new URL('https://cabeto-art.vercel.app/'), // Reemplaza con tu dominio personalizado o tu URL de Vercel
   title: {
     default: 'CabetoArt | Ilustrador & Digital Artist',
     template: '%s | CabetoArt',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'CabetoArt | Ilustrador & Digital Artist',
     description: 'Portafolio oficial y comisiones de arte digital por CabetoArt.',
-    url: 'https://cabeto.art',
+    url: 'https://cabeto-art.vercel.app/',
     siteName: 'CabetoArt',
     images: [
       {
@@ -42,6 +42,9 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+  },
+  verification: {
+    google: 'googlecc2aba337f4e3959',
   },
 };
 

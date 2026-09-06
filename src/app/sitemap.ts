@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://cabeto.art'; // O tu URL de Vercel (https://tu-proyecto.vercel.app)
+  const baseUrl = 'https://cabeto-art.vercel.app'; // O tu URL de Vercel (https://tu-proyecto.vercel.app)
 
   return [
     {
