@@ -11,16 +11,23 @@ export const ProfileSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  // Mapeo dinámico usando las traducciones del contexto
-  const catalogItems = Array.from({ length: galleryManifest.totalImages }, (_, index) => ({
-    id: String(index),
-    src: `/gallery/${index}.webp`,
-    title: `${t.gallery.itemTitle} ${index + 1}`,
-    category: t.gallery.category,
-  }));
+  // Pestaña activa para la sección de precios
+  const [activeTab, setActiveTab] = useState<'lineart' | 'fullcolor'>('lineart');
 
-  const openModal = (index = 0) => {
-    setSelectedIndex(index);
+  // Ajuste del índice (+1) para evitar el error de desfase en la galería
+  const catalogItems = Array.from({ length: galleryManifest.totalImages }, (_, index) => {
+    const idNumber = index + 1;
+    return {
+      id: String(idNumber),
+      src: `/gallery/${idNumber}.webp`,
+      title: `${t.gallery.itemTitle} ${idNumber}`,
+      category: t.gallery.category,
+    };
+  });
+
+  // Abre el modal apuntando a la imagen basada en índice 1 (p. ej. openModal(12) abre 12.webp)
+  const openModal = (imageNumber = 1) => {
+    setSelectedIndex(imageNumber - 1);
     setIsModalOpen(true);
   };
 
@@ -61,7 +68,7 @@ export const ProfileSection = () => {
           </a>
 
           <button
-            onClick={() => openModal(0)}
+            onClick={() => openModal(1)}
             className="bg-neutral-900/90 hover:bg-neutral-800 border border-neutral-700 hover:border-[#ff4757] transition-all duration-200 text-white font-semibold px-6 py-3 rounded-full text-sm flex items-center gap-2 shadow-lg hover:scale-105 active:scale-95"
           >
             <span>🎨</span> {t.hero.viewCatalog} ({catalogItems.length})
@@ -94,123 +101,246 @@ export const ProfileSection = () => {
           </a>
         </div>
       </section>
+
       {/* SECCIÓN PRECIOS */}
       <section className="w-full max-w-5xl flex flex-col items-center gap-6">
         <h2 className="text-2xl font-bold border-b border-neutral-800 pb-2">
           {t.pricing.title}
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
-          {/* ICON / HEADSHOT */}
-          <div className="bg-neutral-900/80 border border-neutral-800 rounded-2xl p-5 flex flex-col justify-between group">
-            <div>
-              <div
-                onClick={() => openModal(12)}
-                className="w-full aspect-[3/4] rounded-xl overflow-hidden mb-4 border border-neutral-800 bg-neutral-950 cursor-pointer relative group/img"
-              >
-                <img
-                  src="/commissions/headshot.webp"
-                  alt="Icon / Headshot Commission"
-                  className="w-full h-full object-cover object-top group-hover/img:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center text-xs font-semibold tracking-wider uppercase text-white">
-                  {t.gallery.viewInCatalog}
-                </div>
-              </div>
-              <h3 className="text-lg font-bold">{t.pricing.icon.title}</h3>
-              <p className="text-3xl font-black text-[#ff4757] my-2">$30 <span className="text-sm font-normal text-gray-400">USD</span></p>
-              <p className="text-xs text-gray-400 mb-4">{t.pricing.icon.description}</p>
-              <ul className="text-xs text-gray-300 space-y-2 mb-6">
-                <li>{t.pricing.icon.feat1}</li>
-                <li>{t.pricing.icon.feat2}</li>
-                <li>{t.pricing.icon.feat3}</li>
-              </ul>
-            </div>
-            <a
-              href="https://vgen.co/cabeto_art"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full text-center bg-neutral-800 hover:bg-[#ff4757] text-white py-2.5 rounded-xl text-sm font-semibold transition-colors"
-            >
-              {t.pricing.orderBtn} Icon
-            </a>
-          </div>
-
-          {/* HALF BODY */}
-          <div className="bg-neutral-900/90 border-2 border-[#ff4757] rounded-2xl p-5 flex flex-col justify-between relative group shadow-[0_0_20px_rgba(255,71,87,0.2)]">
-            <span className="absolute -top-3 right-4 bg-[#ff4757] text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wide z-10 shadow-md">
-              {t.pricing.mostRequested}
-            </span>
-            <div>
-              <div
-                onClick={() => openModal(55)}
-                className="w-full aspect-[3/4] rounded-xl overflow-hidden mb-4 border border-neutral-800 bg-neutral-950 cursor-pointer relative group/img"
-              >
-                <img
-                  src="/commissions/halfbody.webp"
-                  alt="Half Body Commission"
-                  className="w-full h-full object-cover object-top group-hover/img:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center text-xs font-semibold tracking-wider uppercase text-white">
-                  {t.gallery.viewInCatalog}
-                </div>
-              </div>
-              <h3 className="text-lg font-bold">{t.pricing.halfBody.title}</h3>
-              <p className="text-3xl font-black text-[#ff4757] my-2">$60 <span className="text-sm font-normal text-gray-400">USD</span></p>
-              <p className="text-xs text-gray-400 mb-4">{t.pricing.halfBody.description}</p>
-              <ul className="text-xs text-gray-300 space-y-2 mb-6">
-                <li>{t.pricing.halfBody.feat1}</li>
-                <li>{t.pricing.halfBody.feat2}</li>
-                <li>{t.pricing.halfBody.feat3}</li>
-              </ul>
-            </div>
-            <a
-              href="https://vgen.co/cabeto_art"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full text-center bg-[#ff4757] hover:bg-[#ff6b81] text-white py-2.5 rounded-xl text-sm font-semibold transition-colors shadow-lg"
-            >
-              {t.pricing.orderBtn} Half Body
-            </a>
-          </div>
-
-          {/* FULL BODY */}
-          <div className="bg-neutral-900/80 border border-neutral-800 rounded-2xl p-5 flex flex-col justify-between group">
-            <div>
-              <div
-                onClick={() => openModal(27)}
-                className="w-full aspect-[3/4] rounded-xl overflow-hidden mb-4 border border-neutral-800 bg-neutral-950 cursor-pointer relative group/img"
-              >
-                <img
-                  src="/commissions/fullbody.webp"
-                  alt="Full Body Commission"
-                  className="w-full h-full object-cover object-top group-hover/img:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center text-xs font-semibold tracking-wider uppercase text-white">
-                  {t.gallery.viewInCatalog}
-                </div>
-              </div>
-              <h3 className="text-lg font-bold">{t.pricing.fullBody.title}</h3>
-              <p className="text-3xl font-black text-[#ff4757] my-2">$90 <span className="text-sm font-normal text-gray-400">USD</span></p>
-              <p className="text-xs text-gray-400 mb-4">{t.pricing.fullBody.description}</p>
-              <ul className="text-xs text-gray-300 space-y-2 mb-6">
-                <li>{t.pricing.fullBody.feat1}</li>
-                <li>{t.pricing.fullBody.feat2}</li>
-                <li>{t.pricing.fullBody.feat3}</li>
-              </ul>
-            </div>
-            <a
-              href="https://vgen.co/cabeto_art"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full text-center bg-neutral-800 hover:bg-[#ff4757] text-white py-2.5 rounded-xl text-sm font-semibold transition-colors"
-            >
-              {t.pricing.orderBtn} Full Body
-            </a>
-          </div>
+        {/* SELECTOR DE PESTAÑAS (TABS) */}
+        <div className="flex bg-neutral-900/90 p-1.5 rounded-full border border-neutral-800 gap-1 backdrop-blur-sm">
+          <button
+            onClick={() => setActiveTab('lineart')}
+            className={`px-6 py-2 rounded-full text-xs font-bold transition-all duration-200 ${
+              activeTab === 'lineart'
+                ? 'bg-[#ff4757] text-white shadow-[0_0_15px_rgba(255,71,87,0.4)]'
+                : 'text-neutral-400 hover:text-white'
+            }`}
+          >
+            {t.pricing.tabs.lineart}
+          </button>
+          <button
+            onClick={() => setActiveTab('fullcolor')}
+            className={`px-6 py-2 rounded-full text-xs font-bold transition-all duration-200 ${
+              activeTab === 'fullcolor'
+                ? 'bg-[#ff4757] text-white shadow-[0_0_15px_rgba(255,71,87,0.4)]'
+                : 'text-neutral-400 hover:text-white'
+            }`}
+          >
+            {t.pricing.tabs.fullColor}
+          </button>
         </div>
+
+        {/* CONTENIDO LINEART */}
+        {activeTab === 'lineart' && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+            {/* ICON LINEART */}
+            <div className="bg-neutral-900/80 border border-neutral-800 rounded-2xl p-5 flex flex-col justify-between group">
+              <div>
+                <div className="w-full aspect-[3/4] rounded-xl overflow-hidden mb-4 border border-neutral-800 bg-neutral-950">
+                  <img
+                    src="/commissions/lineart/headshot.webp"
+                    alt="Lineart Icon Commission"
+                    className="w-full h-full object-cover object-top"
+                  />
+                </div>
+                <h3 className="text-lg font-bold">{t.pricing.lineart.icon.title}</h3>
+                <p className="text-3xl font-black text-[#ff4757] my-2">{t.pricing.lineart.icon.price} <span className="text-sm font-normal text-gray-400">USD</span></p>
+                <p className="text-xs text-gray-400 mb-4">{t.pricing.lineart.icon.description}</p>
+                <ul className="text-xs text-gray-300 space-y-2 mb-6">
+                  <li>{t.pricing.lineart.icon.feat1}</li>
+                  <li>{t.pricing.lineart.icon.feat2}</li>
+                  <li>{t.pricing.lineart.icon.feat3}</li>
+                </ul>
+              </div>
+              <a
+                href="https://vgen.co/cabeto_art"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full text-center bg-neutral-800 hover:bg-[#ff4757] text-white py-2.5 rounded-xl text-sm font-semibold transition-colors"
+              >
+                {t.pricing.orderBtn} Icon Lineart
+              </a>
+            </div>
+
+            {/* HALF BODY LINEART */}
+            <div className="bg-neutral-900/80 border border-neutral-800 rounded-2xl p-5 flex flex-col justify-between group">
+              <div>
+                <div className="w-full aspect-[3/4] rounded-xl overflow-hidden mb-4 border border-neutral-800 bg-neutral-950">
+                  <img
+                    src="/commissions/lineart/halfbody.webp"
+                    alt="Lineart Half Body Commission"
+                    className="w-full h-full object-cover object-top"
+                  />
+                </div>
+                <h3 className="text-lg font-bold">{t.pricing.lineart.halfBody.title}</h3>
+                <p className="text-3xl font-black text-[#ff4757] my-2">{t.pricing.lineart.halfBody.price} <span className="text-sm font-normal text-gray-400">USD</span></p>
+                <p className="text-xs text-gray-400 mb-4">{t.pricing.lineart.halfBody.description}</p>
+                <ul className="text-xs text-gray-300 space-y-2 mb-6">
+                  <li>{t.pricing.lineart.halfBody.feat1}</li>
+                  <li>{t.pricing.lineart.halfBody.feat2}</li>
+                  <li>{t.pricing.lineart.halfBody.feat3}</li>
+                </ul>
+              </div>
+              <a
+                href="https://vgen.co/cabeto_art"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full text-center bg-neutral-800 hover:bg-[#ff4757] text-white py-2.5 rounded-xl text-sm font-semibold transition-colors"
+              >
+                {t.pricing.orderBtn} Half Body Lineart
+              </a>
+            </div>
+
+            {/* FULL BODY LINEART */}
+            <div className="bg-neutral-900/80 border border-neutral-800 rounded-2xl p-5 flex flex-col justify-between group">
+              <div>
+                <div className="w-full aspect-[3/4] rounded-xl overflow-hidden mb-4 border border-neutral-800 bg-neutral-950">
+                  <img
+                    src="/commissions/lineart/fullbody.webp"
+                    alt="Lineart Full Body Commission"
+                    className="w-full h-full object-cover object-top"
+                  />
+                </div>
+                <h3 className="text-lg font-bold">{t.pricing.lineart.fullBody.title}</h3>
+                <p className="text-3xl font-black text-[#ff4757] my-2">{t.pricing.lineart.fullBody.price} <span className="text-sm font-normal text-gray-400">USD</span></p>
+                <p className="text-xs text-gray-400 mb-4">{t.pricing.lineart.fullBody.description}</p>
+                <ul className="text-xs text-gray-300 space-y-2 mb-6">
+                  <li>{t.pricing.lineart.fullBody.feat1}</li>
+                  <li>{t.pricing.lineart.fullBody.feat2}</li>
+                  <li>{t.pricing.lineart.fullBody.feat3}</li>
+                </ul>
+              </div>
+              <a
+                href="https://vgen.co/cabeto_art"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full text-center bg-neutral-800 hover:bg-[#ff4757] text-white py-2.5 rounded-xl text-sm font-semibold transition-colors"
+              >
+                {t.pricing.orderBtn} Full Body Lineart
+              </a>
+            </div>
+          </div>
+        )}
+
+        {/* CONTENIDO FULL COLOR */}
+        {activeTab === 'fullcolor' && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+            {/* ICON / HEADSHOT */}
+            <div className="bg-neutral-900/80 border border-neutral-800 rounded-2xl p-5 flex flex-col justify-between group">
+              <div>
+                <div
+                  onClick={() => openModal(11)}
+                  className="w-full aspect-[3/4] rounded-xl overflow-hidden mb-4 border border-neutral-800 bg-neutral-950 cursor-pointer relative group/img"
+                >
+                  <img
+                    src="/commissions/fullcolor/headshot.webp"
+                    alt="Icon / Headshot Commission"
+                    className="w-full h-full object-cover object-top group-hover/img:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center text-xs font-semibold tracking-wider uppercase text-white">
+                    {t.gallery.viewInCatalog}
+                  </div>
+                </div>
+                <h3 className="text-lg font-bold">{t.pricing.fullColor.icon.title}</h3>
+                <p className="text-3xl font-black text-[#ff4757] my-2">{t.pricing.fullColor.icon.price} <span className="text-sm font-normal text-gray-400">USD</span></p>
+                <p className="text-xs text-gray-400 mb-4">{t.pricing.fullColor.icon.description}</p>
+                <ul className="text-xs text-gray-300 space-y-2 mb-6">
+                  <li>{t.pricing.fullColor.icon.feat1}</li>
+                  <li>{t.pricing.fullColor.icon.feat2}</li>
+                  <li>{t.pricing.fullColor.icon.feat3}</li>
+                </ul>
+              </div>
+              <a
+                href="https://vgen.co/cabeto_art"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full text-center bg-neutral-800 hover:bg-[#ff4757] text-white py-2.5 rounded-xl text-sm font-semibold transition-colors"
+              >
+                {t.pricing.orderBtn} Icon
+              </a>
+            </div>
+
+            {/* HALF BODY */}
+            <div className="bg-neutral-900/90 border-2 border-[#ff4757] rounded-2xl p-5 flex flex-col justify-between relative group shadow-[0_0_20px_rgba(255,71,87,0.2)]">
+              <span className="absolute -top-3 right-4 bg-[#ff4757] text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wide z-10 shadow-md">
+                {t.pricing.mostRequested}
+              </span>
+              <div>
+                <div
+                  onClick={() => openModal(149)}
+                  className="w-full aspect-[3/4] rounded-xl overflow-hidden mb-4 border border-neutral-800 bg-neutral-950 cursor-pointer relative group/img"
+                >
+                  <img
+                    src="/commissions/fullcolor/halfbody.webp"
+                    alt="Half Body Commission"
+                    className="w-full h-full object-cover object-top group-hover/img:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center text-xs font-semibold tracking-wider uppercase text-white">
+                    {t.gallery.viewInCatalog}
+                  </div>
+                </div>
+                <h3 className="text-lg font-bold">{t.pricing.fullColor.halfBody.title}</h3>
+                <p className="text-3xl font-black text-[#ff4757] my-2">{t.pricing.fullColor.halfBody.price} <span className="text-sm font-normal text-gray-400">USD</span></p>
+                <p className="text-xs text-gray-400 mb-4">{t.pricing.fullColor.halfBody.description}</p>
+                <ul className="text-xs text-gray-300 space-y-2 mb-6">
+                  <li>{t.pricing.fullColor.halfBody.feat1}</li>
+                  <li>{t.pricing.fullColor.halfBody.feat2}</li>
+                  <li>{t.pricing.fullColor.halfBody.feat3}</li>
+                </ul>
+              </div>
+              <a
+                href="https://vgen.co/cabeto_art"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full text-center bg-[#ff4757] hover:bg-[#ff6b81] text-white py-2.5 rounded-xl text-sm font-semibold transition-colors shadow-lg"
+              >
+                {t.pricing.orderBtn} Half Body
+              </a>
+            </div>
+
+            {/* FULL BODY */}
+            <div className="bg-neutral-900/80 border border-neutral-800 rounded-2xl p-5 flex flex-col justify-between group">
+              <div>
+                <div
+                  onClick={() => openModal(123)}
+                  className="w-full aspect-[3/4] rounded-xl overflow-hidden mb-4 border border-neutral-800 bg-neutral-950 cursor-pointer relative group/img"
+                >
+                  <img
+                    src="/commissions/fullcolor/fullbody.webp"
+                    alt="Full Body Commission"
+                    className="w-full h-full object-cover object-top group-hover/img:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center text-xs font-semibold tracking-wider uppercase text-white">
+                    {t.gallery.viewInCatalog}
+                  </div>
+                </div>
+                <h3 className="text-lg font-bold">{t.pricing.fullColor.fullBody.title}</h3>
+                <p className="text-3xl font-black text-[#ff4757] my-2">{t.pricing.fullColor.fullBody.price} <span className="text-sm font-normal text-gray-400">USD</span></p>
+                <p className="text-xs text-gray-400 mb-4">{t.pricing.fullColor.fullBody.description}</p>
+                <ul className="text-xs text-gray-300 space-y-2 mb-6">
+                  <li>{t.pricing.fullColor.fullBody.feat1}</li>
+                  <li>{t.pricing.fullColor.fullBody.feat2}</li>
+                  <li>{t.pricing.fullColor.fullBody.feat3}</li>
+                </ul>
+              </div>
+              <a
+                href="https://vgen.co/cabeto_art"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full text-center bg-neutral-800 hover:bg-[#ff4757] text-white py-2.5 rounded-xl text-sm font-semibold transition-colors"
+              >
+                {t.pricing.orderBtn} Full Body
+              </a>
+            </div>
+          </div>
+        )}
       </section>
+
+      {/* PROCESO CREATIVO */}
       <ProcessCarousel />
+
       {/* TÉRMINOS Y CONDICIONES (ToS) */}
       <section className="w-full max-w-3xl bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-6 text-center">
         <h3 className="font-bold text-base mb-4">{t.tos.title}</h3>
@@ -229,6 +359,7 @@ export const ProfileSection = () => {
           </div>
         </div>
       </section>
+
       {/* MODAL DE GALERÍA */}
       <GalleryModal
         isOpen={isModalOpen}

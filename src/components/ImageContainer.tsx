@@ -3,50 +3,50 @@
 import { useEffect, useState, useRef } from 'react';
 
 interface ImageContainerProps {
-  initialIndex: number;
-  cachedUrls: string[];
+  imageName: string;
+  totalImages: number;
   id: number;
 }
 
 export const ImageContainer = ({
-  initialIndex,
-  cachedUrls,
+  imageName,
+  totalImages,
   id,
 }: ImageContainerProps) => {
-  const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  const [currentImage, setCurrentImage] = useState(imageName);
   const [rotation, setRotation] = useState(0);
 
-  const usedIndicesRef = useRef<Set<number>>(new Set([initialIndex]));
+  const usedNamesRef = useRef<Set<string>>(new Set([imageName]));
 
   useEffect(() => {
-    if (!cachedUrls.length) return;
+    if (!totalImages) return;
 
     let timeoutId: NodeJS.Timeout;
     let flipTimeoutId: NodeJS.Timeout;
 
     const startFlipCycle = () => {
-      const randomDelay = Math.random() * 8000 + 4000;
+      const randomDelay = Math.random() * 8000 + 6000;
 
       timeoutId = setTimeout(() => {
         setRotation(90);
 
         flipTimeoutId = setTimeout(() => {
-          let newIndex: number;
-          const total = cachedUrls.length;
+          let newName: string;
 
-          if (usedIndicesRef.current.size >= total) {
-            usedIndicesRef.current.clear();
+          if (usedNamesRef.current.size >= totalImages) {
+            usedNamesRef.current.clear();
           }
 
           do {
-            newIndex = Math.floor(Math.random() * total);
+            const randomNum = Math.floor(Math.random() * totalImages) + 1;
+            newName = `${randomNum}.webp`;
           } while (
-            usedIndicesRef.current.has(newIndex) &&
-            usedIndicesRef.current.size < total
+            usedNamesRef.current.has(newName) &&
+            usedNamesRef.current.size < totalImages
           );
 
-          usedIndicesRef.current.add(newIndex);
-          setCurrentIndex(newIndex);
+          usedNamesRef.current.add(newName);
+          setCurrentImage(newName);
 
           setRotation(0);
           startFlipCycle();
@@ -60,7 +60,7 @@ export const ImageContainer = ({
       clearTimeout(timeoutId);
       clearTimeout(flipTimeoutId);
     };
-  }, [cachedUrls.length]);
+  }, [totalImages]);
 
   return (
     <div
@@ -74,8 +74,10 @@ export const ImageContainer = ({
       }}
     >
       <img
-        src={cachedUrls[currentIndex]}
+        src={`/gallery/${currentImage}`}
         alt="CabetoArt Drawing"
+        loading="lazy"
+        decoding="async"
         className="w-full h-auto rounded-xl sm:rounded-2xl object-cover block"
         style={{ backfaceVisibility: 'hidden' }}
       />

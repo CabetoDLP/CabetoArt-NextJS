@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -32,10 +32,25 @@ export const GalleryModal = ({
     setMounted(true);
   }, []);
 
+  // Sincroniza el índice activo cuando cambia o abre el modal
   useEffect(() => {
-    setCurrentIndex(initialIndex);
-  }, [initialIndex]);
+    if (isOpen) {
+      const validIndex =
+        initialIndex >= 0 && initialIndex < images.length ? initialIndex : 0;
+      setCurrentIndex(validIndex);
+    }
+  }, [isOpen, initialIndex, images.length]);
 
+  // Handlers memorizados para evitar problemas de stale closure
+  const handleNext = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % images.length);
+  }, [images.length]);
+
+  const handlePrev = useCallback(() => {
+    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+  }, [images.length]);
+
+  // Manejo de navegación por teclado corregido
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isOpen) return;
@@ -46,19 +61,11 @@ export const GalleryModal = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, currentIndex, images.length]);
+  }, [isOpen, handleNext, handlePrev, onClose]);
 
   if (!isOpen || images.length === 0 || !mounted) return null;
 
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % images.length);
-  };
-
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-  };
-
-  const activeImage = images[currentIndex];
+  const activeImage = images[currentIndex] || images[0];
 
   return createPortal(
     <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/90 backdrop-blur-md p-4 transition-opacity duration-300">
@@ -86,7 +93,7 @@ export const GalleryModal = ({
         </button>
       )}
 
-      {/* Contenido Modal HD */}
+      {/* Contenido Modal */}
       <div className="relative max-w-5xl max-h-[85vh] w-full flex flex-col items-center justify-center gap-3">
         <div className="relative overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-950 flex items-center justify-center max-h-[75vh]">
           <img
@@ -102,7 +109,7 @@ export const GalleryModal = ({
             {t.gallery?.category || activeImage.category}
           </span>
           <h3 className="text-lg font-bold">
-            {t.gallery?.itemTitle ? `${t.gallery.itemTitle} ${currentIndex + 1}` : activeImage.title}
+            {activeImage.title}
           </h3>
           <p className="text-xs text-neutral-400 mt-1">
             {currentIndex + 1} / {images.length}
