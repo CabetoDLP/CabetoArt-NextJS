@@ -33,9 +33,7 @@ export const MosaicGallery = () => {
             // Flex 1 distribuye las columnas equitativamente sin sobrepasar el contenedor
             <div 
               key={colIndex} 
-              className={`overflow-hidden h-screen flex-1 box-border ${
-                colIndex >= 2 ? 'hidden sm:block' : 'block' // En móviles muestra 2 cols, en desktop 4
-              }`}
+              className={`overflow-hidden h-screen flex-1 box-border`}
             >
               <div className="animate-scroll-y flex flex-col w-full">
                 {[...columnImages, ...columnImages].map((imgName, index) => (
