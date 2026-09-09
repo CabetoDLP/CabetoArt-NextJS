@@ -18,6 +18,9 @@ export const ImageContainer = ({
 
   const usedNamesRef = useRef<Set<string>>(new Set([imageName]));
 
+  // Extraer el número limpio de la imagen (ej: "12.webp" -> "12")
+  const imageNumber = currentImage.replace('.webp', '');
+
   useEffect(() => {
     if (!totalImages) return;
 
@@ -75,7 +78,9 @@ export const ImageContainer = ({
     >
       <img
         src={`/gallery/${currentImage}`}
-        alt="CabetoArt Drawing"
+        /* Alt dinámico con palabras clave de marca e índice */
+        alt={`CabetoArt - Ilustración Anime & Manga #${imageNumber}`}
+        title={`Ilustración CabetoArt #${imageNumber}`}
         loading="lazy"
         decoding="async"
         className="w-full h-auto rounded-xl sm:rounded-2xl object-cover block"
