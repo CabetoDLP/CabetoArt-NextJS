@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: '%s | CabetoArt',
   },
   description: 'Portafolio oficial y comisiones de arte digital por CabetoArt. Chibi, Character Design e Ilustración.',
-  keywords: ['CabetoArt', 'cabeto.art', 'Digital Art', 'Commissions', 'Illustration', 'VGen', 'Artist'],
+  keywords: ['CabetoArt', 'cabeto.art', 'cabeto art', 'Digital Art', 'Commissions', 'Illustration', 'VGen', 'Artist'],
   authors: [{ name: 'Carlos Alberto' }],
   openGraph: {
     title: 'CabetoArt | Ilustrador & Digital Artist',

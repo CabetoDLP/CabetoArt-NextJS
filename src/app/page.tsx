@@ -6,13 +6,15 @@ import galleryManifest from '@/data/galleryManifest.json';
 export default function Home() {
   const baseUrl = 'https://cabeto-art.vercel.app';
 
-  // Mapeo dinámico de las 154 imágenes para Googlebot-Image
+  // Mapeo dinámico optimizado con licencias y aviso de copyright para Search Console
   const imagesSchema = Array.from({ length: galleryManifest.totalImages }, (_, i) => ({
     '@context': 'https://schema.org',
     '@type': 'ImageObject',
     'contentUrl': `${baseUrl}/gallery/${i + 1}.webp`,
     'name': `Ilustración CabetoArt #${i + 1}`,
     'creditText': 'CabetoArt',
+    'copyrightNotice': '© CabetoArt. Todos los derechos reservados.',
+    'license': baseUrl,
     'creator': {
       '@type': 'Person',
       'name': 'CabetoArt',
@@ -33,3 +35,4 @@ export default function Home() {
     </main>
   );
 }
+
