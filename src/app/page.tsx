@@ -4,7 +4,7 @@ import { CursorGlow } from '@/components/CursorGlow';
 import galleryManifest from '@/data/galleryManifest.json';
 
 export default function Home() {
-  const baseUrl = 'https://cabeto-art.vercel.app';
+  const baseUrl = 'https://cabetoart.onrender.com';
 
   // Mapeo dinámico optimizado con licencias y aviso de copyright para Search Console
   const imagesSchema = Array.from({ length: galleryManifest.totalImages }, (_, i) => ({

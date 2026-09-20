@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 export const dynamic = 'force-static';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://cabeto-art.vercel.app';
+  const baseUrl = 'https://cabetoart.onrender.com';
 
   return {
     rules: {
