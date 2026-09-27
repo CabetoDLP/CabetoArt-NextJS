@@ -4,7 +4,7 @@ import galleryManifest from '@/data/galleryManifest.json';
 export const dynamic = 'force-static';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://cabeto-art.vercel.app';
+  const baseUrl = 'https://cabetoart.onrender.com';
   const totalImages = galleryManifest.totalImages; // 154
 
   // Generar lista de URLs de imágenes
